@@ -174,6 +174,16 @@ describe('roles and membership', () => {
     expect(invites).toEqual([]);
   });
 
+  it('the admin can change household settings (same request as the settings page)', async () => {
+    const saved = must(await a1.client.from('households').update({
+      name: 'Kuća A2', address: 'Ulica 1', description: null, timezone: 'Europe/Belgrade', currency: 'RSD',
+    }).eq('id', hhA).select('id, name').single());
+    expect(saved.name).toBe('Kuća A2');
+    const bad = await a1.client.from('households').update({ timezone: 'Mars/Olympus' }).eq('id', hhA).select('id');
+    expect(bad.error?.message).toBe('invalid_timezone');
+    must(await a1.client.from('households').update({ name: 'Kuća A' }).eq('id', hhA).select('id').single());
+  });
+
   it('but they have equal rights on shared data', async () => {
     const t = must(await a3.client.rpc('create_task', {
       p_household: hhA, p_data: { title: 'Iznositi smeće', category: 'cleaning' }, p_assignees: [a1.id],
