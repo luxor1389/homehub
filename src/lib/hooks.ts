@@ -23,7 +23,7 @@ export function unwrap<T>(res: { data: T | null; error: unknown }): T {
  */
 export function useAction<TVars, TResult = unknown>(
   fn: (vars: TVars) => Promise<TResult>,
-  opts: { groups: Group[]; success?: string | ((r: TResult, v: TVars) => string | null); onSuccess?: (r: TResult, v: TVars) => void; silentError?: boolean } ,
+  opts: { groups: Group[]; success?: string | ((r: TResult, v: TVars) => string | null); onSuccess?: (r: TResult, v: TVars) => void; silentError?: boolean | ((e: unknown) => boolean) } ,
 ) {
   const qc = useQueryClient();
   const { householdId } = useCurrentHousehold();
@@ -39,7 +39,8 @@ export function useAction<TVars, TResult = unknown>(
       opts.onSuccess?.(r, v);
     },
     onError: (e) => {
-      if (!opts.silentError) toast.error(e);
+      const silent = typeof opts.silentError === 'function' ? opts.silentError(e) : opts.silentError;
+      if (!silent) toast.error(e);
     },
   });
 }

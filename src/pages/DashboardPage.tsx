@@ -48,7 +48,13 @@ export function DashboardPage() {
   const filtered = useMemo(() => applyFilters(open.data ?? [], filters, today), [open.data, filters, today]);
   const overdue = filtered.filter((o) => o.is_overdue);
   const todays = filtered.filter((o) => o.due_date === today && !o.is_overdue);
-  const week = filtered.filter((o) => o.due_date > today && o.due_date <= addDays(today, 7));
+  // next occurrence per recurring task only, so a daily task doesn't fill the whole list
+  const seen = new Set<string>();
+  const week = filtered.filter((o) => {
+    if (o.due_date <= today || o.due_date > addDays(today, 7) || seen.has(o.task_id)) return false;
+    seen.add(o.task_id);
+    return true;
+  });
   const inProgress = filtered.filter((o) => o.status === 'in_progress');
   const recentDone = applyFilters(recent.data ?? [], { ...filters, status: '', deadline: '' }, today);
 
