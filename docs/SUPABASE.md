@@ -18,6 +18,10 @@ supabase link --project-ref <REF-PROJEKTA>
 supabase db push             # primenjuje sve migracije redom
 ```
 
+Preko GitHub integracije (bez terminala): **Project Settings → Integrations → GitHub**, izaberi repozitorijum,
+Working directory `.`, Production branch `main`, uključi **Deploy to production**. Posle svakog push-a na `main`
+Supabase sam primenjuje nove migracije (status: **Database → Migrations**).
+
 Bez CLI-ja: otvori **SQL Editor** i izvrši fajlove iz `supabase/migrations/` redom po imenu (0001 → 0006).
 
 Migracije prave: tabele sa RLS politikama, pomoćne funkcije u šemi `private`, RPC funkcije (pozivnice, zadaci,
