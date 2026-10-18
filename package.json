@@ -11,7 +11,8 @@
     "test": "vitest run src",
     "test:db": "vitest run tests/integration",
     "test:e2e": "playwright test",
-    "i18n:check": "node scripts/check-i18n.mjs"
+    "i18n:check": "node scripts/check-i18n.mjs",
+    "start": "serve -s dist -l tcp://0.0.0.0:${PORT:-3000}"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
@@ -23,6 +24,7 @@
     "react-hook-form": "^7.53.1",
     "react-i18next": "^15.1.0",
     "react-router-dom": "^6.27.0",
+    "serve": "^14.2.6",
     "zod": "^3.23.8"
   },
   "devDependencies": {

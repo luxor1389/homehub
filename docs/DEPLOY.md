@@ -14,6 +14,11 @@ VITE_SUPABASE_URL=... VITE_SUPABASE_ANON_KEY=... npm run build
 Bilo koji statički hosting sa HTTPS-om (PWA i service worker rade samo preko HTTPS-a). Bitno je da sve
 nepoznate putanje vraćaju `index.html` (SPA rutiranje, npr. `/join/<token>`).
 
+**Railway** (podešeno u `railway.json`): New Project → Deploy from GitHub repo → izaberi repozitorijum.
+U **Variables** dodaj `VITE_SUPABASE_URL` i `VITE_SUPABASE_ANON_KEY` (Railway ih prosleđuje i u build).
+Railway pokreće `npm run build`, pa `npm start` (statički server sa SPA fallback-om na `$PORT`).
+Zatim **Settings → Networking → Generate Domain** daje HTTPS adresu. Supabase i dalje ostaje backend.
+
 **Vercel**: Import repozitorijuma → Framework „Vite“ → Environment Variables: `VITE_SUPABASE_URL`,
 `VITE_SUPABASE_ANON_KEY`. `vercel.json` je već u repozitorijumu:
 ```json
